@@ -7,7 +7,6 @@ namespace BookApi.Controllers // 命名空間，確保這個 Controller 屬於 B
     
     [Route("api/[controller]")] // 設定 API 路徑，例如 /api/books
     [ApiController] // 標記這個類別為 Web API 控制器
-    [Authorize]
     public class BooksController : ControllerBase // 繼承 ControllerBase，代表這是一個 API 控制器
     {
         // 建立一個模擬書籍資料的 List

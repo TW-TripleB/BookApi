@@ -1,0 +1,18 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VSCode setting
+.vscode/
+
+# Secrets / settings
+appsettings.Development.json
+appsettings.Production.json
+.env
+
+# Others
+*.log

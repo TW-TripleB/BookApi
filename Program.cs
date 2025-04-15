@@ -6,9 +6,10 @@ using BookApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // 讀取 JWT 設定
-var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
-builder.Services.Configure<JwtSettings>(jwtSettingsSection);
-var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+JwtSettings jwtSettings = new JwtSettings();
+builder.Configuration.Bind("JwtSettings", jwtSettings);
+Console.WriteLine($"JWT Loaded - Issuer: {jwtSettings.Issuer}, Key: {jwtSettings.SecretKey}");
 
 // JWT 驗證設定
 builder.Services.AddAuthentication(options =>

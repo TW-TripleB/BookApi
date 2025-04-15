@@ -5,6 +5,7 @@ using BookApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace BookApi.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login([FromBody] LoginModel model)
         {
             if (model.Username == "admin" && model.Password == "1234") // 模擬帳號
@@ -30,7 +32,8 @@ namespace BookApi.Controllers
                 {
                     Subject = new ClaimsIdentity(new[]
                     {
-                        new Claim(ClaimTypes.Name, model.Username)
+                        new Claim(ClaimTypes.Name, model.Username),
+                        new Claim(ClaimTypes.Role, "Admin")
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                     Issuer = _jwtSettings.Issuer,
@@ -41,7 +44,8 @@ namespace BookApi.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(new { token = tokenHandler.WriteToken(token) });
             }
-
+            Console.WriteLine($"ISSUER: {_jwtSettings.Issuer}");
+            Console.WriteLine($"KEY: {_jwtSettings.SecretKey}");
             return Unauthorized("Invalid credentials");
         }
     }

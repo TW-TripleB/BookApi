@@ -1,0 +1,22 @@
+### Step 1 - 登入並儲存 JWT token 到變數
+POST https://localhost:5022/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "1234"
+}
+
+> {%
+// 將 token 存到變數 jwtToken
+client.global.set("jwtToken", response.body.token);
+%}
+
+### Step 2 - 自動帶入 token 呼叫需要授權的 API
+GET https://localhost:5022/api/books
+Authorization: Bearer {{jwtToken}}
+
+
+### Step 3 - 自動帶入 token 呼叫需要授權的 API
+GET https://localhost:5022/api/userinfo/me
+Authorization: Bearer {{jwtToken}}
